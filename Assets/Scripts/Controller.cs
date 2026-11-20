@@ -5,6 +5,10 @@ public class Controller : MonoBehaviour
 {
     [SerializeField] float speed = 5f;
     [SerializeField] float jump = 5f;
+    [SerializeField] AudioClip yesilSes;
+    [SerializeField] AudioClip kirmiziSes;
+    [SerializeField] AudioClip zıplamaSes;
+    AudioSource ses;
     
     
 
@@ -14,6 +18,7 @@ public class Controller : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        ses = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -21,6 +26,7 @@ public class Controller : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.AddForce(Vector3.up * jump, ForceMode.Impulse);
+            ses.PlayOneShot(zıplamaSes);
             isGrounded = false;
         }
     }
@@ -39,8 +45,19 @@ public class Controller : MonoBehaviour
         {
             isGrounded = true;
         }
-       
+        
     }
-    
-    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("KirmiziTop"))
+        {
+            ses.PlayOneShot(kirmiziSes);
+        }
+        else if (other.gameObject.CompareTag("YesilTop"))
+        {
+            ses.PlayOneShot(yesilSes);
+        }
+    }
+
 }
